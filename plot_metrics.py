@@ -41,7 +41,7 @@ cleanacc = np.array(metrics)[:, :, 0, 1][result_indices_to_plot]
 cleanacc = np.transpose(cleanacc)
 
 # Plot setup
-fontsize = 20
+fontsize = 19
 
 fig, ax = plt.subplots()
 fig.set_size_inches(17,8)
