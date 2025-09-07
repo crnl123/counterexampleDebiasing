@@ -45,9 +45,12 @@ fontsize = 19
 
 fig, ax = plt.subplots()
 fig.set_size_inches(17,8)
+plt.subplots_adjust(bottom=0.25,left=0.055,top=0.95,right=0.997)
+
 ax.set_ylim(0,1)
 ax.set_xlim(.5,len(result_indices_to_plot)+.5)
-plt.subplots_adjust(bottom=0.25,left=0.055,top=0.95,right=0.997)
+
+ax.spines[['right', 'top']].set_visible(False)
 
 plt.grid(which="major",axis='y', alpha=.4, color='black', linewidth=1)
 plt.grid(which="minor",axis='y', alpha=.2, color='black')
@@ -120,8 +123,8 @@ plt.rcParams['text.usetex'] = False
 plt.xticks(np.array(range(1,16))[:len(result_indices_to_plot)],
            labels[result_indices_to_plot])
 
-plt.yticks(np.linspace(0,1,11), minor=False)
-plt.yticks(np.linspace(0,1,21), minor=True)
+plt.yticks(np.linspace(0,1,10, endpoint=False), minor=False)
+plt.yticks(np.linspace(0,1,20, endpoint=False), minor=True)
 
 # plt.xticks(np.array(range(13))[:len(result_indices_to_plot)+1])
 
