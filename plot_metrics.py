@@ -41,12 +41,13 @@ cleanacc = np.array(metrics)[:, :, 0, 1][result_indices_to_plot]
 cleanacc = np.transpose(cleanacc)
 
 # Plot setup
+fontsize = 20
 
 fig, ax = plt.subplots()
-fig.set_size_inches(18,8)
+fig.set_size_inches(17,8)
 ax.set_ylim(0,1)
 ax.set_xlim(.5,len(result_indices_to_plot)+.5)
-plt.subplots_adjust(bottom=0.20,left=0.04,top=0.95,right=0.997)
+plt.subplots_adjust(bottom=0.25,left=0.055,top=0.95,right=0.997)
 
 plt.grid(which="major",axis='y', alpha=.4, color='black', linewidth=1)
 plt.grid(which="minor",axis='y', alpha=.2, color='black')
@@ -85,6 +86,7 @@ watermark = plt.violinplot(
 lines = [
     1.5,
     3.5,
+    6.5,
     9.5,
     10.5
 ]
@@ -95,18 +97,18 @@ for line in lines:
 
 plt.rcParams['text.usetex'] = True
 
-ax.tick_params(labelsize=15)
+ax.tick_params(labelsize=fontsize)
 
 labels = np.array(['Ours:\n$X_i+N_i$\n$(X_i+N_i) \oplus C_{t_{1 \dots I-1}}$\n$C_i$',
                    'Naive:\n$X_i+N_i$',
                    'Imbalanced:\n$X_i+N_i$\n$(X_i+N_i) \oplus C_j$\n(unbalanced)\n$C_i$',
                    '$X_i+N_i$\n$C_i$',
-                   'Naive\n75% images\nwatermarked',
-                   '10% examples\n75% images\nwatermarked',
-                   'Ours\n75% images\nwatermarked',
-                   'Naive\n100% images\nwatermarked',
-                   '10% examples\n100% images\nwatermarked',
-                   'Ours\n100% images\nwatermarked',
+                   'Naive\n75%\nwatermark',
+                   '10%\nexamples\n75%\nwatermark',
+                   'Ours\n75%\nwatermark',
+                   'Naive\n100%\nwatermark',
+                   '10%\nexamples\n100%\nwatermark',
+                   'Ours\n100%\nwatermark',
                    '1/2 size\npatches',
                    'DO NOT USE\nredundant\nOurs',
                    'DO NOT USE\nredundant\nOurs',
@@ -123,17 +125,17 @@ plt.yticks(np.linspace(0,1,21), minor=True)
 
 # plt.xticks(np.array(range(13))[:len(result_indices_to_plot)+1])
 
-plt.xlabel("Methods",fontsize=15)
-plt.ylabel("Accuracy",fontsize=15)
+plt.xlabel("Methods", fontsize=fontsize)
+plt.ylabel("Accuracy", fontsize=fontsize)
 # plt.title("Auxiliary Watermark Accuracy")
 plt.legend([clean['bodies'][0], watermarked['bodies'][0], watermark['bodies'][0]],
-           ["$X_i$", "$X_i+N_i$", "$N_i$"],fontsize=15)
+           ["$X_i$", "$X_i+N_i$", "$N_i$"], fontsize=fontsize, loc='upper right')
 
-plt.title('Experimental results',fontsize=15)
+plt.title('Experimental results', fontsize=fontsize)
 
 # Finish
 
-plt.savefig("plot.pdf", format="pdf")
+plt.savefig("all_experiments.pdf", format="pdf")
 plt.show()
 
 # plt.savefig("plot.png", format="png")
