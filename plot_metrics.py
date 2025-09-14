@@ -45,7 +45,7 @@ fontsize = 19
 
 fig, ax = plt.subplots()
 fig.set_size_inches(17,8)
-plt.subplots_adjust(bottom=0.25,left=0.055,top=0.95,right=0.997)
+plt.subplots_adjust(bottom=0.25,left=0.055,top=0.99,right=0.997)
 
 ax.set_ylim(0,1)
 ax.set_xlim(.5,len(result_indices_to_plot)+.5)
@@ -96,13 +96,22 @@ lines = [
 for line in lines:
     plt.axvline(x=line, color='black', alpha=.4, linewidth=1, linestyle=(0, (20, 20)))
 
+# Annotations
+plt.annotate('A', (1.0,.95), fontsize=fontsize, ha='center', va='center')
+plt.annotate('B', (2.5,.95), fontsize=fontsize, ha='center', va='center')
+plt.annotate('C', (5.0,.95), fontsize=fontsize, ha='center', va='center')
+plt.annotate('D', (8.0,.95), fontsize=fontsize, ha='center', va='center')
+plt.annotate('E', (10.,.95), fontsize=fontsize, ha='center', va='center')
+plt.annotate('F', (11.,.95), fontsize=fontsize, ha='center', va='center')
+
+
 # Labels
 
 plt.rcParams['text.usetex'] = True
 
 ax.tick_params(labelsize=fontsize)
 
-labels = np.array(['Ours:\n$X_i+N_i$\n$(X_i+N_i) \oplus C_{t_{1 \dots I-1}}$\n$C_i$',
+labels = np.array(['Ours:\n$X_i+N_i$\n$(X_i+N_i) \oplus C_{t_{1 \dots {|I_{-i}|}}}$\n$C_i$',
                    'Naive:\n$X_i+N_i$',
                    'Imbalanced:\n$X_i+N_i$\n$(X_i+N_i) \oplus C_j$\n(unbalanced)\n$C_i$',
                    '$X_i+N_i$\n$C_i$',
@@ -131,10 +140,15 @@ plt.yticks(np.linspace(0,1,20, endpoint=False), minor=True)
 plt.xlabel("Methods", fontsize=fontsize)
 plt.ylabel("Accuracy", fontsize=fontsize)
 # plt.title("Auxiliary Watermark Accuracy")
-plt.legend([clean['bodies'][0], watermarked['bodies'][0], watermark['bodies'][0]],
-           ["$X_i$", "$X_i+N_i$", "$N_i$"], fontsize=fontsize, loc='upper right')
+plt.legend([clean['bodies'][0],
+            watermarked['bodies'][0],
+            watermark['bodies'][0]],
+            ["$X_i$", "$X_i+N_i$", "$N_i$"],
+            fontsize=fontsize,
+            loc=(.88,.7)
+           )
 
-plt.title('Experimental results', fontsize=fontsize)
+# plt.title('Experimental results', fontsize=fontsize)
 
 # Finish
 
