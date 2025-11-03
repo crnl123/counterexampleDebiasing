@@ -29,7 +29,7 @@ for name in filenames:
 
 
 # Metrics: method, repeat, test type(clean, watermarked, watermark), result type(loss, accuracy)
-result_indices_to_plot = np.array([0,1,3,4,5,6,7,8,9,10,13])
+result_indices_to_plot = np.array([0,1])
 
 watermarkacc = np.array(metrics)[:, :, 2, 1][result_indices_to_plot]
 watermarkacc = np.transpose(watermarkacc)
@@ -44,8 +44,9 @@ cleanacc = np.transpose(cleanacc)
 fontsize = 19
 
 fig, ax = plt.subplots()
-fig.set_size_inches(17,8)
-plt.subplots_adjust(bottom=0.25,left=0.055,top=0.99,right=0.997)
+fig.set_size_inches(8,8)
+# plt.subplots_adjust(bottom=0.25,left=0.055,top=0.99,right=0.997)
+plt.subplots_adjust(bottom=0.15, left=0.12, top=0.99, right=0.98)
 
 ax.set_ylim(0,1)
 ax.set_xlim(.5,len(result_indices_to_plot)+.5)
@@ -69,21 +70,21 @@ clean = plt.violinplot(
     showextrema=showextrema,
     showmedians=showmedians,
     quantiles=np.array([[.25, .75]]*len(result_indices_to_plot)).T,
-    widths=.95)
+    widths=.8)
 watermarked = plt.violinplot(
     watermarkedacc,
     showmeans=showmeans,
     showextrema=showextrema,
     showmedians=showmedians,
     quantiles=np.array([[.25, .75]]*len(result_indices_to_plot)).T,
-    widths=.95)
+    widths=.8)
 watermark = plt.violinplot(
     watermarkacc,
     showmeans=showmeans,
     showextrema=showextrema,
     showmedians=showmedians,
     quantiles=np.array([[.25, .75]]*len(result_indices_to_plot)).T,
-    widths=.95)
+    widths=.8)
 
 # Separators
 lines = [
@@ -96,13 +97,13 @@ lines = [
 for line in lines:
     plt.axvline(x=line, color='black', alpha=.4, linewidth=1, linestyle=(0, (20, 20)))
 
-# Annotations
-plt.annotate('A', (1.0,.95), fontsize=fontsize, ha='center', va='center')
-plt.annotate('B', (2.5,.95), fontsize=fontsize, ha='center', va='center')
-plt.annotate('C', (5.0,.95), fontsize=fontsize, ha='center', va='center')
-plt.annotate('D', (8.0,.95), fontsize=fontsize, ha='center', va='center')
-plt.annotate('E', (10.,.95), fontsize=fontsize, ha='center', va='center')
-plt.annotate('F', (11.,.95), fontsize=fontsize, ha='center', va='center')
+# # Annotations
+# plt.annotate('A', (1.0,.95), fontsize=fontsize, ha='center', va='center')
+# plt.annotate('B', (2.5,.95), fontsize=fontsize, ha='center', va='center')
+# plt.annotate('C', (5.0,.95), fontsize=fontsize, ha='center', va='center')
+# plt.annotate('D', (8.0,.95), fontsize=fontsize, ha='center', va='center')
+# plt.annotate('E', (10.,.95), fontsize=fontsize, ha='center', va='center')
+# plt.annotate('F', (11.,.95), fontsize=fontsize, ha='center', va='center')
 
 
 # Labels
@@ -111,7 +112,7 @@ plt.rcParams['text.usetex'] = True
 
 ax.tick_params(labelsize=fontsize)
 
-labels = np.array(['Ours:\n$X_i+N_i$\n$(X_i+N_i) \oplus C_{t_{1 \dots {|I_{-i}|}}}$\n$C_i$',
+labels = np.array(['Ours:\n$\{X_i,y_i\}_{i=1}^I \cup \mathcal{C} \cup \{C_j, y_j\}_{j=1}^J$',
                    'Naive:\n$X_i+N_i$',
                    'Imbalanced:\n$X_i+N_i$\n$(X_i+N_i) \oplus C_j$\n(unbalanced)\n$C_i$',
                    '$X_i+N_i$\n$C_i$',
@@ -145,14 +146,14 @@ plt.legend([clean['bodies'][0],
             watermark['bodies'][0]],
             ["$X_i$", "$X_i+N_i$", "$N_i$"],
             fontsize=fontsize,
-            loc=(.88,.7)
+            # loc=(.88,.7)
            )
 
 # plt.title('Experimental results', fontsize=fontsize)
 
 # Finish
 
-plt.savefig("all_experiments.pdf", format="pdf")
+plt.savefig("experiment1.pdf", format="pdf")
 plt.show()
 
 # plt.savefig("plot.png", format="png")
