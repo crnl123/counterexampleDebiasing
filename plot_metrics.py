@@ -29,7 +29,7 @@ for name in filenames:
 
 
 # Metrics: method, repeat, test type(clean, watermarked, watermark), result type(loss, accuracy)
-result_indices_to_plot = np.array([0,1,3,4,5,6,7,8,9,10,13])
+result_indices_to_plot = np.array([0,1,3,4,5,6,7,8,9,13])
 
 watermarkacc = np.array(metrics)[:, :, 2, 1][result_indices_to_plot]
 watermarkacc = np.transpose(watermarkacc)
@@ -45,7 +45,7 @@ fontsize = 19
 
 fig, ax = plt.subplots()
 fig.set_size_inches(17,8)
-plt.subplots_adjust(bottom=0.25,left=0.055,top=0.99,right=0.997)
+plt.subplots_adjust(bottom=0.23,left=0.05,top=1,right=1)
 
 ax.set_ylim(0,1)
 ax.set_xlim(.5,len(result_indices_to_plot)+.5)
@@ -88,6 +88,7 @@ watermark = plt.violinplot(
 # Separators
 lines = [
     1.5,
+    2.5,
     3.5,
     6.5,
     9.5,
@@ -98,11 +99,12 @@ for line in lines:
 
 # Annotations
 plt.annotate('A', (1.0,.95), fontsize=fontsize, ha='center', va='center')
-plt.annotate('B', (2.5,.95), fontsize=fontsize, ha='center', va='center')
-plt.annotate('C', (5.0,.95), fontsize=fontsize, ha='center', va='center')
-plt.annotate('D', (8.0,.95), fontsize=fontsize, ha='center', va='center')
-plt.annotate('E', (10.,.95), fontsize=fontsize, ha='center', va='center')
-plt.annotate('F', (11.,.95), fontsize=fontsize, ha='center', va='center')
+plt.annotate('B', (2.,.95), fontsize=fontsize, ha='center', va='center')
+plt.annotate('C', (3,.95), fontsize=fontsize, ha='center', va='center')
+plt.annotate('D', (5.0,.95), fontsize=fontsize, ha='center', va='center')
+plt.annotate('E', (8.0,.95), fontsize=fontsize, ha='center', va='center')
+plt.annotate('F', (10.,.95), fontsize=fontsize, ha='center', va='center')
+# plt.annotate('F', (11.,.95), fontsize=fontsize, ha='center', va='center')
 
 
 # Labels
@@ -121,7 +123,7 @@ labels = np.array(['Ours:\n$X^N_i$\n$X_i^{N_i} \oplus C_{t_1},\dots$\n$C_i$',
                    'Naive\n100%\nwatermark',
                    '10%\nexamples\n100%\nwatermark',
                    'Ours\n100%\nwatermark',
-                   '1/2 size\npatches',
+                   '1/2 size\npatches - MOVE TO APPENDIX',
                    'DO NOT USE\nredundant\nOurs',
                    'DO NOT USE\nredundant\nOurs',
                    'Ours\nscrambled\ntesting\nwatermarks',
