@@ -113,10 +113,10 @@ plt.rcParams['text.usetex'] = True
 
 ax.tick_params(labelsize=fontsize)
 
-labels = np.array(['Ours:\n$X^N_i$\n$X_i^{N_i} \oplus C_{t_1},\dots$\n$C_i$',
-                   'Naive:\n$X^N_i$',
-                   'Imbalanced:\n$X^N_i$\n$X^N_i \oplus C_j$\n(unbalanced)\n$C_i$',
-                   '$X^N_i$ and $C_i$',
+labels = np.array(['Ours:\n$X^{N_i}_i$\n$X_i^{N_i} \oplus C_{t_1},\dots$\n$C_i$',
+                   'Naive:\n$X^{N_i}_i$',
+                   'Imbalanced:\n$X^{N_i}_i$\n$X^{N_i}_i \oplus C_j$\n(unbalanced)\n$C_i$',
+                   '$X^{N_i}_i$ and $C_i$',
                    'Naive\n75%\nwatermark',
                    '10%\nexamples\n75%\nwatermark',
                    'Ours\n75%\nwatermark',
@@ -145,7 +145,7 @@ plt.ylabel("Accuracy", fontsize=fontsize)
 plt.legend([clean['bodies'][0],
             watermarked['bodies'][0],
             watermark['bodies'][0]],
-            ["$X_i$", "$X^N_i$", "$N_i$"],
+            ["$X_i$", "$X^{N_i}_i$", "$N_i$"],
             fontsize=fontsize,
             loc=(.88,.7)
            )
