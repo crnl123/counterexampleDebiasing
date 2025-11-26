@@ -26,6 +26,10 @@ def run(args):
 
         clean_train, marked_train = make_sets(classes)
         mixed_train = utils.XYDataset(train_x, train_y)
+
+        if utils.is_label_mixing(args['box_mode']):
+            clean_train.to_one_hot()
+            marked_train.to_one_hot()
         whole_train = data.ConcatDataset((clean_train, marked_train, mixed_train))
     else:
         whole_train = utils.XYDataset(xh, y)
@@ -262,7 +266,20 @@ if __name__ == '__main__':
         'name': 'Naive'  # pretty print
     }
 
-    methods = naive75, tenth75, three_quarters75, watermark, tenth_fully_watermarked, debias_quarters_P_match
+    cutmix = {
+        'dataset': 'datasets/watermark/dataset.pickle',  # Dataset given by adversary
+        'mixed': 'datasets/watermark/cutmix.pickle',  # D(mix)
+        'mix_size': 4500*9,  # Size of D(mix), should change wrt. number and percentage of watermarks
+        'box_mode': 'CUTMIX_random_box',  # Patching method
+        'test': 'datasets/watermark/dataset_test.pickle',  # Test set
+        'weight': 'weights/classifier_cutmix.pth',  # Model address
+        'epochs': 15,
+        'batch_size': 128,
+        'val_method': 0,  # 0=clean, 1=marked, 2=watermark
+        'name': 'CutMix'  # pretty print
+    }
+
+    methods = [cutmix]
     metrics = []
 
     for method in methods:

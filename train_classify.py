@@ -4,6 +4,7 @@ import numpy as np
 from tqdm import tqdm
 from torch import nn
 import dwn
+import torch.nn.functional as f
 from torchvision.transforms import v2
 from torch.utils import data
 import utils
@@ -51,15 +52,21 @@ def make_sets(classes):
     return clean_set, marked_set
 
 
-def mix(size, classes, mix_func):
+def mix(size, classes, xmix_func):
     """
 
     :param size: How big the mixed set should be for each x class
     :param classes: List of dictionaries containing xh, yxh, x, yx
-    :param mix_func: Callable function to mix x and xh
+    :param xmix_func: Callable function to mix x and xh
     :return:
     """
     # x_acc, y_acc = torch.empty((0,)), torch.empty((0,))  # Unused b.c. this method is slow
+    if not xmix_func.label_mixing:
+        ymix_func = lambda y, _, __: y
+    else:
+        ymix_func = lambda y, yh, frac: \
+            f.one_hot(yh.to(torch.int64), num_classes=10) * frac + \
+            f.one_hot(y.to(torch.int64), num_classes=10) * (1-frac)
     x_acc, y_acc = [], []
     for c in range(len(classes)):
         print(f'Class {c}')
@@ -71,22 +78,28 @@ def mix(size, classes, mix_func):
         for c_ in other_cs:
             xh = torch.cat((xh, c_["xh"]))
 
+        yxh = torch.empty((0,))
+        for c_ in other_cs:
+            yxh = torch.cat((yxh, c_["yxh"]))
+
         rand_xhis = torch.randperm(len(xh))  # Random list of indices
         rand_xis = torch.randperm(len(x))
         for i in tqdm(range(size), leave=False):
             rand_i = rand_xhis[i % len(rand_xhis)]
             xhi = xh[rand_i]  # Modulo over shuffled xh indices and choose sample
+            yhi = yxh[rand_i:rand_i + 1]
 
             rand_i = rand_xis[i % len(rand_xis)]
             xi = x[rand_i]  # Modulo over shuffled x indices and choose sample
             yi = yx[rand_i:rand_i + 1]
 
-            mix_i = mix_func(xi, xhi)
+            xmix_i, frac = xmix_func(xi, xhi)
+            ymix_i = ymix_func(yi, yhi, frac)
 
-            # x_acc = torch.cat((x_acc, torch.unsqueeze(mix_i, 0)))
+            # x_acc = torch.cat((x_acc, torch.unsqueeze(xmix_i, 0)))
             # y_acc = torch.cat((y_acc, yi))
-            x_acc.append(mix_i)
-            y_acc.append(yi)
+            x_acc.append(xmix_i)
+            y_acc.append(ymix_i)
     return torch.stack(x_acc), torch.cat(y_acc)
 
 
@@ -94,7 +107,10 @@ def train(model, train_loader, test_loaders, optimizer, loss_func, device=torch.
     model.train()
     for i, (x, y) in enumerate(tqdm(train_loader, leave=False, disable=not use_tqdm)):
         x = x.to(device)
-        y = y.to(device).to(torch.int64)
+        if len(y.size()) == 1:
+            y = y.to(device).to(torch.int64)
+        else:
+            y = y.to(device)
 
         o = model(x)
 
