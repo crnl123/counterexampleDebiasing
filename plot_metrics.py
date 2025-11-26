@@ -14,7 +14,8 @@ filenames = [
     'metrics/metrics_debias_naive_unbalanced_cleanmix.pickle',      # 0,1,2,3
     'metrics/full_vs_75_metric.pickle',                             # 4,5,6,7,8,9
     'metrics/quarters_vs_halves_metrics.pickle',                    # 10,11
-    'metrics/quarters_true_vs_false_metrics.pickle'                 # 12,13
+    'metrics/quarters_true_vs_false_metrics.pickle',                # 12,13
+    'metrics/cutmix.pickle'                                         # 14
 ]
 
 for name in filenames:
@@ -29,7 +30,7 @@ for name in filenames:
 
 
 # Metrics: method, repeat, test type(clean, watermarked, watermark), result type(loss, accuracy)
-result_indices_to_plot = np.array([0,1,3,4,5,6,7,8,9,13])
+result_indices_to_plot = np.array([0,1,3,4,5,6,7,8,9,13,14])
 
 watermarkacc = np.array(metrics)[:, :, 2, 1][result_indices_to_plot]
 watermarkacc = np.transpose(watermarkacc)
@@ -127,6 +128,7 @@ labels = np.array(['Ours:\n$X^{N_i}_i$\n$X_i^{N_i} \oplus C_{t_1},\dots$\n$C_i$'
                    'DO NOT USE\nredundant\nOurs',
                    'DO NOT USE\nredundant\nOurs',
                    'Ours\nscrambled\ntesting\nwatermarks',
+                   'Label Mixing'
                    ])
 
 plt.rcParams['text.usetex'] = False
